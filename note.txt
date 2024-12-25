@@ -1,0 +1,87 @@
+cd /mnt/c/wamp64/www
+
+ssh -i "learn-docker.pem" ubuntu@ec2-3-110-50-143.ap-south-1.compute.amazonaws.com
+
+sudo apt get-update
+---
+to install docker.io 
+it will bring all stuff related to docker ie docker eng,dockerdemon,dockercli..
+-> sudo apt-get install docker.io
+
+to chack docker running or not or status of docker 
+
+-> sudo systemctl status docker
+
+-->docker file>docker image>container
+> sudo docker login
+>sudo docker run -e MYSQL_ROOT_PASSWORD=root MySQL
+>vim Dockerfile
+> esc >:wq
+
+FROM openjdk:17-jdk-alpine
+WORKDIR /app
+COPY src/Main.java /app/Main.java
+RUN javac Main.java
+CMD ["java", "Main"]
+
+-----
+docker logs containerid
+docker attach containerid
+> enter inside MySQL container 
+ >sudo docker exec -it e04046785993 bash
+ >bash-5.1#   mysql -u root -p
+> in order to run container alwase 
+  docker run -itd container
+
+>Docker Network
+1> Host host -network and port same as docker container
+2> Brudge (default) - default network provided by docker to connect container to host machine 
+3> user define bridge
+4> none - no network compiletly isolated
+5> MACKVLAN -(docker swarm like k8 cluster)
+6>IPVLAN
+7>Overly
+
+
+>sudo docker network ls
+to create network 
+> sudo docker network create mynetwork -d bridge
+
+---
+ sudo docker run -d -p 5000:5000 -e MYSQL_HOST=silly_feynman -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_DB=devops flask-app
+
+==creating network for flask app
+
+sudo docker network create two-tear -d bridge
+ sudo docker network ls
+>creating MySQL container with specific notwork i
+>sudo docker run -d --name mysql --network two-tear -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=devops MySQL
+to run flask app
+> sudo docker run -d -p 5000:5000 --network two-tear -e MYSQL_HOST=mysql -e MYSQL_USER=root-e MYSQL_PASSWORD=root -e MYSQL_DB=devops flask-app
+
+>docker network inspact two-tear
+
+--docker volume 
+>sudoo docker volume create deepakv
+>sudo docker volume ls
+>sudo docker volume inspect deepakv
+
+
+docker exec -it 4390ca56fb14 bash
+ ----------
+
+ sudo apt install nginx
+ >sudo systemctl status nginx
+
+---kafka
+>.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+>.\bin\windows\kafka-server-start.bat .\config\server.properties
+>kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partition 1 --topic test
+
+>kafka-console-producer.bat --broker-list localhost:9092 --topic test
+
+
+{"Name: "John", "Age":"31", "Gender":"Male"}
+{"Name: "Emma", "Age":"27", "Gender":"Female"}
+{"Name: "Ronald", "Age":"17", "Gender":"Male"}
+>kafka-console-consumer.bat --topic test --bootstrap-server localhost:9092 --from-beginning
